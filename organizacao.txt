@@ -1,0 +1,30 @@
+Oranização para o segundo trabalho de ED I
+
+
+Struct de árvore:
+    arvore* esq
+    arvore* dir
+    int id
+    int peso
+    char caractere
+
+* TAD lista (vai conter arvore.h)
+    - célula vai conter o ponteiro para a árvore
+    - criar uma função de ordenação da lista com base no peso do nó
+    - função de criação da árvore ótima  
+
+
+* compactador.c 
+    - receber o arquivo a ser compactado 
+    - ler o arquivo a ser compactado - para definir os caracteres usados e os seus respectivos pesos 
+    - construir a árvore ótima de codificação (tabela de codificação)
+    - escrever a sequência de bits codificado no arquivo compactado 
+    - o arquivo compactado deve conter a árvore de codificação, uma marca de final de arquivo
+    - a marca final de arquivo deverá ser inserido após a contagem de bits do arquivo compactado, já que deverá preencher por completo toda a estruta de bits que pode ser deixada para trás
+
+
+
+* descompactador.c
+    - receber o arquivo a ser descompactado 
+    - ler e tratar/ reconstruir a árvore de descompactação 
+    - escrever os caracteres descodificados

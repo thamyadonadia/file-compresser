@@ -1,0 +1,11 @@
+Estudar o TAD Bitmap
+Criar o TAD lista
+Criar o TAD árvore
+Começar o TAD Compactador 1/2
+
+
+PROXIMA SEMANA
+
+Continuar o TAD Compactador
+Começar o TAD descompactador
+Fazer Documentação
