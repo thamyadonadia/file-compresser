@@ -7,7 +7,7 @@ typedef struct lista Lista;
 
 Lista* inicializaLista();
 
-void insereLista(Arvore* a);
+void insereLista(Arvore* arv);
 
 void retiraLista(Lista* lista);
 
