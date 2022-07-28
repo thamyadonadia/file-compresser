@@ -3,13 +3,11 @@
 
 typedef struct arvore Arvore;
 
-Arvore* criaArvoreVazia();
+Arvore* inicializaArvore();
 
-Arvore* criaArvore(Arvore* arv, unsigned char carac);
+Arvore* insereArvore(unsigned char carac);
 
 Arvore* uneArvores(Arvore* dir, Arvore* esq);
-
-Arvore* insereArvore(Arvore* arv, unsigned char carac);
 
 unsigned char getCaractere(Arvore* arv);
 
