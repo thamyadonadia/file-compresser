@@ -13,7 +13,11 @@ void retiraLista(Lista* lista, Arvore* arv);
 
 Celula* getCelIndice(Lista* lista, int idx);
 
+Arvore* getArvCel(Celula* cel);
+
 void ordenaLista(Lista* lista);
+
+void juntaArvoresLista(Lista* lista);
 
 void liberaLista(Lista* lista);
 

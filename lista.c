@@ -103,6 +103,10 @@ Celula* getCelIndice(Lista* lista, int idx){
     }
 }
 
+Arvore* getArvCel(Celula* cel){
+    return cel->arv;
+}
+
 static Celula* getMenorPeso(Celula* cel){
     Celula* p; Celula* menor= cel;
     long int menorpeso=getPeso(cel->arv);
@@ -170,6 +174,40 @@ void ordenaLista(Lista* lista){
 
     }
 
+}
+
+static int getTamLista(Lista* lista){
+    if(lista==NULL){
+        return NULL;
+    }
+    if(lista->prim==lista->ult){
+        return 1;
+    }
+
+    Celula* p;
+    int i=1;
+
+    for(p=lista->prim;p!=NULL;p=p->prox){
+        i++;
+    }
+    return i;
+}
+
+void juntaArvoresLista(Lista* lista){
+    if(lista!=NULL||getTamLista(lista)==1){
+        return;
+    }
+    Arvore* pri;Arvore* seg;Arvore* nova;
+    while(getTamLista(lista)!=1){
+
+        pri=getArvCel(getCelIndice(lista,0));
+        seg=getArvCel(getCelIndice(lista,1));
+        nova = uneArvores(seg,pri);
+
+        insereLista(lista, nova);
+        retiraLista(lista,pri);
+        retiraLista(lista,seg);
+    }
 }
 
 void liberaLista(Lista* lista){
