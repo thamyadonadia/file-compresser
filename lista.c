@@ -78,11 +78,97 @@ void retiraLista(Lista* lista, Arvore* arv){
     }
 }
 
-void ordenaLista(Lista* lista){
-    long int pesoMax = getPeso(lista->prim->arv);
-    Celula* p;
+static Celula* getMenorPeso(Celula* cel){
+    Celula* p; Celula* menor= cel;
+    long int menorpeso=getPeso(cel->arv);
 
-    for(p = lista->prim; p != NULL; p = p->prox);
+    for(p=cel; p!=NULL; p=p->prox){
+        if(getPeso(p->arv)<menorpeso){
+            menorpeso = getPeso(p->arv);
+            menor = p;
+        }
+    }
+    return menor;
+}
+
+Celula* getCelIndice(Lista* lista, int idx){
+    Celula* p;
+    int i;
+    for(i=0,p=lista->prim;i<idx&&p!=NULL;i++,p=p->prox){
+    }
+    if(p==NULL){
+        return NULL;
+    }else{
+        return p;
+    }
+}
+
+static Celula* getMenorPeso(Celula* cel){
+    Celula* p; Celula* menor= cel;
+    long int menorpeso=getPeso(cel->arv);
+
+    for(p=cel; p!=NULL; p=p->prox){
+        if(getPeso(cel->arv)<menorpeso){
+            menorpeso = getPeso(cel->arv);
+            menor = p;
+        }
+    }
+    return menor;
+}
+
+
+void ordenaLista(Lista* lista){
+    Celula* p; Celula* m;
+    Celula* prox; Celula* ant;
+    int i;
+
+    for(i = 0, p=getCelIndice(lista,i);p!=NULL; i++,p=getCelIndice(lista,i)){
+        m=getMenorPeso(p);
+        if(m==p){
+            continue;
+        }else{
+            //armazena ponteiros do menor
+            prox = m->prox;
+            if(p==m->ant){
+                ant=m;
+            }else{
+                ant = m->ant;
+            }
+            if(m==lista->ult){
+                lista->ult=p;
+            }
+
+            //passa ponteiros do maior para o menor
+            if(m==p->prox){
+                m->prox=p;
+            }else{
+                m->prox=p->prox;
+            }
+            
+            m->ant=p->ant;
+
+            if(p==lista->prim){
+                lista->prim = m;
+            }else{
+                p->ant->prox=m;
+            }
+            if(p->prox!=m){
+                p->prox->ant = m;
+            }
+            
+
+            //passa os armazenados para o maior
+            p->ant=ant;
+            p->prox=prox;
+
+            if(lista->ult!=p){
+                prox->ant=p;
+            }
+            p->ant->prox=p;
+
+        }
+
+    }
 
 }
 
