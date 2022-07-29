@@ -3,6 +3,8 @@
 
 #include "arvore.h"
 
+typedef struct celula Celula;
+
 typedef struct lista Lista;
 
 Lista* inicializaLista();

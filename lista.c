@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include "lista.h"
 
-typedef struct celula Celula;
 
 struct celula{
     Celula* ant;

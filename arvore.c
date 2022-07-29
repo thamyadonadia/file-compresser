@@ -82,3 +82,28 @@ void liberaArvore(Arvore* arv){
 
 
 
+
+
+static void imprimeArvore (Arvore* arv){
+    
+    if(arv != NULL){
+        if(arv->esq!=NULL){
+        printf("%c -- %c\n",arv->letra,arv->esq->letra);
+        }
+        if(arv->dir!=NULL){
+        printf("%c -- %c\n",arv->letra,arv->dir->letra);
+        }
+        imprimeArvore(arv->esq);
+        imprimeArvore(arv->dir);
+    }
+
+    
+    return;
+}
+
+void arv_imprime(Arvore* arv){
+    printf("\nstrict graph{\n");
+    imprimeArvore(arv);
+    printf("}\n");
+    return;
+}
