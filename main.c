@@ -20,5 +20,7 @@ int main(int argc, char const *argv[])
 
     arv_imprime(arv);
 
+    liberaArvore(arv);
+
     return 0;
 }

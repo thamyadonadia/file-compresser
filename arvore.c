@@ -18,6 +18,7 @@ Arvore* inicializaArvore(){
     arv->esq=NULL;
     arv->peso=0;
     arv->id=0;
+    arv->letra=-1;
 
     return arv;
 }
@@ -95,7 +96,7 @@ static void imprimeArvore (Arvore* arv, int space){
         printf(" ");
     }
 
-    if(getCaractere(arv)<128&&getCaractere(arv)>0){
+    if(getCaractere(arv)<128&&getCaractere(arv)>=0){
         printf("%c\n", getCaractere(arv));
     }else{
         printf("O");
