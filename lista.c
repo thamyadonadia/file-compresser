@@ -181,7 +181,7 @@ static int getTamLista(Lista* lista){
 }
 
 void juntaArvoresLista(Lista* lista){
-    if(lista!=NULL||getTamLista(lista)==1){
+    if(lista==NULL||getTamLista(lista)==1){
         return;
     }
     Arvore* pri;Arvore* seg;Arvore* nova;
@@ -194,12 +194,14 @@ void juntaArvoresLista(Lista* lista){
         insereLista(lista, nova);
         retiraLista(lista,pri);
         retiraLista(lista,seg);
+
+        
     }
 }
 
 void liberaLista(Lista* lista){
     Celula* p; Celula* temp;
-
+    p=lista->prim;
     while(p!=NULL){
         temp = p->prox;
         free(p);
@@ -207,4 +209,11 @@ void liberaLista(Lista* lista){
     }
 
     free(lista);
+}
+
+void imprimeLista(Lista* lista){
+    Celula* p;
+    for(p=lista->prim;p!=NULL;p=p->prox){
+        printf("%c -- %ld\n",getCaractere(getArvCel(p)),getPeso(getArvCel(p)));
+    }
 }

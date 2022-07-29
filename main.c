@@ -14,6 +14,7 @@ int main(int argc, char const *argv[])
     }
     char fileName[100];
     sscanf(argv[1], "%s", fileName);
+    printf("%s\n",fileName);
     chars=getCharsFile(fileName);
     arv=createOptimalTree(chars);
 

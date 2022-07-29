@@ -34,6 +34,7 @@ Arvore* uneArvores(Arvore* dir, Arvore* esq){
     arv = inicializaArvore();
     arv->dir=dir;
     arv->esq=esq;
+    setPeso(arv,getPeso(dir)+getPeso(esq));
     return arv;
 }
 
@@ -77,26 +78,33 @@ void liberaArvore(Arvore* arv){
 
 
 
-static void imprimeArvore (Arvore* arv){
-    
-    if(arv != NULL){
-        if(arv->esq!=NULL){
-        printf("%c -- %c\n",arv->letra,arv->esq->letra);
-        }
-        if(arv->dir!=NULL){
-        printf("%c -- %c\n",arv->letra,arv->dir->letra);
-        }
-        imprimeArvore(arv->esq);
-        imprimeArvore(arv->dir);
+static void imprimeArvore (Arvore* arv, int space){
+
+
+    if (arv == NULL){
+        return;
     }
 
-    
-    return;
+
+    space += 10;
+
+    imprimeArvore (arv->dir, space);
+
+    printf("\n");
+    for (int i = 10; i < space; i++){
+        printf(" ");
+    }
+
+    if(getCaractere(arv)<128&&getCaractere(arv)>0){
+        printf("%c\n", getCaractere(arv));
+    }else{
+        printf("O");
+    }
+    imprimeArvore (arv->esq, space);
+
 }
 
 void arv_imprime(Arvore* arv){
-    printf("\nstrict graph{\n");
-    imprimeArvore(arv);
-    printf("}\n");
+    imprimeArvore(arv, 0);
     return;
 }

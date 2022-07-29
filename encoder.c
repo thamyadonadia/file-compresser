@@ -27,20 +27,26 @@ Arvore* createOptimalTree(int* chars){
     Lista* lista;
     lista=inicializaLista();
     Arvore* arvtemp;
+    unsigned char l;
 
     for(int i=0;i<128;i++){
         if(chars[i]==0){
             continue;
         }
-        arvtemp=insereArvore(i);
+        printf("%c -- %d\n",i,chars[i]);
+        l = i;
+        arvtemp=insereArvore(l);
         setPeso(arvtemp,chars[i]);
         insereLista(lista,arvtemp);
-
     }
+
 
     free(chars);
 
     ordenaLista(lista);
+    printf("\n\n\n\n");
+    imprimeLista(lista);
+
     juntaArvoresLista(lista);
     arvtemp=getArvCel(getCelIndice(lista,0));
     liberaLista(lista);

@@ -23,4 +23,8 @@ void juntaArvoresLista(Lista* lista);
 
 void liberaLista(Lista* lista);
 
+//funções de teste
+
+void imprimeLista(Lista* lista);
+
 #endif // LISTA_H
