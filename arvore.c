@@ -17,7 +17,6 @@ Arvore* inicializaArvore(){
     arv->dir=NULL;
     arv->esq=NULL;
     arv->peso=0;
-    arv->letra=NULL;
     arv->id=0;
 
     return arv;
@@ -39,17 +38,11 @@ Arvore* uneArvores(Arvore* dir, Arvore* esq){
 }
 
 unsigned char getCaractere(Arvore* arv){
-    if(arv!=NULL && arv->letra!=NULL){
-        return arv->letra;
-    }
-    return NULL;
+    return arv->letra;
 }
 
 long int getPeso(Arvore* arv){
-    if(arv!=NULL){
-        return arv->peso;
-    }
-    return NULL;
+    return arv->peso;
 }
 
 void setPeso(Arvore* arv, long int peso){

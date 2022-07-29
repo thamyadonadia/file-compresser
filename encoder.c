@@ -12,10 +12,10 @@ int* getCharsFile(char* fileName){
         vetor[i]=0;
     }
 
-    char letra;
+    unsigned char letra;
 
     while(!feof(file)){
-        fscanf(file, "%c",letra);
+        fscanf(file, "%c",&letra);
         vetor[letra]++;
     }
     fclose(file);

@@ -46,8 +46,8 @@ void retiraLista(Lista* lista, Arvore* arv){
         if(p->arv == arv){
             // caso seja o único elemento da lista 
             if(lista->prim == p && lista->ult == p){
-                lista->prim == NULL;
-                lista->ult == NULL;
+                lista->prim = NULL;
+                lista->ult = NULL;
                 free(p);
                 return;
                 
@@ -106,18 +106,6 @@ Arvore* getArvCel(Celula* cel){
     return cel->arv;
 }
 
-static Celula* getMenorPeso(Celula* cel){
-    Celula* p; Celula* menor= cel;
-    long int menorpeso=getPeso(cel->arv);
-
-    for(p=cel; p!=NULL; p=p->prox){
-        if(getPeso(cel->arv)<menorpeso){
-            menorpeso = getPeso(cel->arv);
-            menor = p;
-        }
-    }
-    return menor;
-}
 
 
 void ordenaLista(Lista* lista){
@@ -177,7 +165,7 @@ void ordenaLista(Lista* lista){
 
 static int getTamLista(Lista* lista){
     if(lista==NULL){
-        return NULL;
+        return -1;
     }
     if(lista->prim==lista->ult){
         return 1;
