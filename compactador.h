@@ -4,10 +4,9 @@
 #include "bitmap.h"
 #include "encoder.h"
 
-bitmap* criaBitMap(Arvore* arv);
 
+//bitmap* criaBitMap(Arvore* arv);
 
-
-void compacta(bitmap* bits, FILE* arquivo);
+//void compacta(bitmap* bits, FILE* arquivo);
 
 #endif // COMPACTADOR_H

@@ -15,6 +15,8 @@ long int getPeso(Arvore* arv);
 
 void setPeso(Arvore* arv, long int peso);
 
+unsigned char* buscaArvore(Arvore* arv,unsigned char carac);
+
 void liberaArvore(Arvore* arv);
 
 //USADO PARA TESTES

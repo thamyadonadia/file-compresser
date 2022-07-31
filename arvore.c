@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include <string.h>
 
 #include"arvore.h"
 
@@ -53,6 +54,62 @@ void setPeso(Arvore* arv, long int peso){
     }
     return;
 }
+
+static char* buscaNoArvore(Arvore* arv, unsigned char carac){
+    char* codigoD; char* codigoE;
+    if(arv==NULL){
+        return NULL;
+    
+    }else if(arv->id==1){
+        if(arv->letra==carac){
+            char* codigo = malloc(2*sizeof(char));
+            codigo[0]='2';
+            codigo[1]='\0';
+            return codigo;
+
+        }else{
+            return NULL;
+        }
+    
+    }else if(arv->dir!=NULL){
+        codigoD = buscaNoArvore(arv->dir,carac);
+       
+        if(codigoD!=NULL && !strcmp(codigoD, "2")){
+            codigoD[0] = '1';
+            return codigoD;
+        
+        }else if((codigoD)!=NULL){
+            strcat(codigoD, "1");
+            return codigoD;
+        }
+
+        free(codigoD);
+
+    }if(arv->esq!=NULL){
+        codigoE = buscaNoArvore(arv->esq,carac);
+        if(codigoE!=NULL && !strcmp(codigoE, "2")){
+            codigoE[0] = '0';
+            return codigoE;
+        
+        }else if((codigoE)!=NULL){
+            strcat(codigoE, "0");
+            return codigoE;
+        }
+
+        free(codigoE);
+    }
+
+    return NULL;
+
+}
+
+unsigned char* buscaArvore(Arvore* arv,unsigned char carac){
+    unsigned char* codigo = (unsigned char*) buscaNoArvore(arv,carac);
+    printf("%s\n",codigo);
+    free(codigo);
+    return NULL;
+}
+
 
 void liberaArvore(Arvore* arv){
     if(arv==NULL){

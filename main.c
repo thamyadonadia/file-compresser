@@ -20,6 +20,14 @@ int main(int argc, char const *argv[])
 
     arv_imprime(arv);
 
+    unsigned char letra;
+    unsigned char* codigo;
+
+    printf("\n\n Digite uma letra para ser buscada:\n");
+    scanf("%c",&letra);
+
+    codigo = buscaArvore(arv,letra);
+    
     liberaArvore(arv);
 
     return 0;
