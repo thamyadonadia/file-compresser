@@ -17,8 +17,6 @@ void setPeso(Arvore* arv, long int peso);
 
 void liberaArvore(Arvore* arv);
 
-
-
 //USADO PARA TESTES
 void arv_imprime(Arvore* arv);
 

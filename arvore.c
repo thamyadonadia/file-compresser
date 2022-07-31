@@ -74,11 +74,6 @@ void liberaArvore(Arvore* arv){
     return;
 }
 
-
-
-
-
-
 static void imprimeArvore (Arvore* arv, int space){
 
 

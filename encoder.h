@@ -7,8 +7,4 @@ int* getCharsFile(char* fileName);
 
 Arvore* createOptimalTree(int* chars);
 
-
-
-
-
 #endif

@@ -27,7 +27,6 @@ int main(void) {
 	for (i=0; i<bitmapGetLength(bm); i++) {
 		printf("bit #%d = %0xh\n", i, bitmapGetBit(bm, i));
 	}
-
     
     bitmapLibera(bm);
     
