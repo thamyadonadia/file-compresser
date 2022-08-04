@@ -25,9 +25,27 @@ int main(int argc, char const *argv[])
 
     printf("\n\n Digite uma letra para ser buscada:\n");
     scanf("%c",&letra);
-
-    codigo = buscaArvore(arv,letra);
+    buscaArvore(arv, letra);
     
+
+    // long int altura = getAlturaCaractere(arv, '6');
+    // printf("Altura da letra 6: %ld\n", altura);
+
+    // altura = getAlturaCaractere(arv, 'o');
+    // printf("Altura da letra o: %ld\n", altura);
+
+    // altura = getAlturaCaractere(arv, 'm');
+    // printf("Altura da letra m: %ld\n", altura);
+
+    // altura = getAlturaCaractere(arv, 'e');
+    // printf("Altura da letra e: %ld\n", altura);
+
+    // altura = getAlturaCaractere(arv, 's');
+    // printf("Altura da letra s: %ld\n", altura);
+
+    // altura = getAlturaCaractere(arv, ' ');
+    // printf("Altura do espaço: %ld\n", altura);
+
     liberaArvore(arv);
 
     return 0;

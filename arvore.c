@@ -55,57 +55,91 @@ void setPeso(Arvore* arv, long int peso){
     return;
 }
 
-static char* buscaNoArvore(Arvore* arv, unsigned char carac){
-    char* codigoD; char* codigoE;
+
+int arvoreVazia(Arvore* arv){
     if(arv==NULL){
-        return NULL;
-    
-    }else if(arv->id==1){
-        if(arv->letra==carac){
-            char* codigo = malloc(2*sizeof(char));
-            codigo[0]='2';
-            codigo[1]='\0';
-            return codigo;
-
-        }else{
-            return NULL;
-        }
-    
-    }else if(arv->dir!=NULL){
-        codigoD = buscaNoArvore(arv->dir,carac);
-       
-        if(codigoD!=NULL && !strcmp(codigoD, "2")){
-            codigoD[0] = '1';
-            return codigoD;
-        
-        }else if((codigoD)!=NULL){
-            strcat(codigoD, "1");
-            return codigoD;
-        }
-
-        free(codigoD);
-
-    }if(arv->esq!=NULL){
-        codigoE = buscaNoArvore(arv->esq,carac);
-        if(codigoE!=NULL && !strcmp(codigoE, "2")){
-            codigoE[0] = '0';
-            return codigoE;
-        
-        }else if((codigoE)!=NULL){
-            strcat(codigoE, "0");
-            return codigoE;
-        }
-
-        free(codigoE);
+        return 1;
     }
 
-    return NULL;
-
+    return 0;
 }
 
-unsigned char* buscaArvore(Arvore* arv,unsigned char carac){
-    unsigned char* codigo = (unsigned char*) buscaNoArvore(arv,carac);
-    printf("%s\n",codigo);
+
+static long int maximo(long int a, long int b){
+    if(a>=b){
+        return a;
+    }
+
+    return b;
+}
+
+long int getAlturaCaractere(Arvore* arv, unsigned char carac){
+    if(arvoreVazia(arv)){
+        return -2147483648;
+
+    }else if(arv->letra == carac){
+        return 0;
+
+    }else{
+        long int altura = (maximo(getAlturaCaractere(arv->esq, carac), getAlturaCaractere(arv->dir, carac)));
+        return altura + 1;
+        
+    }   
+}
+
+
+static long int buscaNoArvore(Arvore* arv, unsigned char carac, char* codigo, long int alturaCaractere){
+    long int d = -1, e = -1;
+    
+    if(arv == NULL){
+        return -1;
+
+    }else if(arv->id == 1){
+        if(arv->letra == carac){
+            return alturaCaractere;
+        
+        }else{
+            return -1;
+        }
+    
+    }
+
+    if(arv->dir!=NULL){
+        d = buscaNoArvore(arv->dir, carac, codigo, alturaCaractere);
+    }
+
+    if(arv->esq!=NULL){
+        e = buscaNoArvore(arv->esq, carac, codigo, alturaCaractere);
+    }
+
+    if(d == -1 && e == -1){
+        return -1;
+    
+    }else if(d == -1){
+        codigo[e] = '0';
+        return e-1;      
+    
+    }else if(e == -1){
+        codigo[d] = '1';
+        return d-1;
+    }
+
+    return -1;
+}
+
+
+unsigned char* buscaArvore(Arvore* arv, unsigned char carac){
+    long int alturaCaractere = getAlturaCaractere(arv, carac);
+
+    // caractere inexistente na árvore ou árvore nula 
+    if(alturaCaractere<0){
+        return NULL;
+    }
+
+    char* codigo = (char*) malloc(sizeof(char)*(alturaCaractere+1));
+    codigo[alturaCaractere] = '\0';
+    buscaNoArvore(arv, carac, codigo, alturaCaractere-1);
+    printf("%s\n", codigo);
     free(codigo);
     return NULL;
 }
