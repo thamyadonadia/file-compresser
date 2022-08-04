@@ -44,6 +44,19 @@ unsigned char getCaractere(Arvore* arv){
     return arv->letra;
 }
 
+int getTipo(Arvore* arv){
+    return arv->id;
+}
+
+
+Arvore* getSAE(Arvore* arv){
+    return arv->esq;
+}
+
+Arvore* getSAD(Arvore* arv){
+    return arv->dir;
+}
+
 long int getPeso(Arvore* arv){
     return arv->peso;
 }
@@ -54,6 +67,7 @@ void setPeso(Arvore* arv, long int peso){
     }
     return;
 }
+
 
 
 int arvoreVazia(Arvore* arv){
@@ -80,7 +94,8 @@ long int getAlturaCaractere(Arvore* arv, unsigned char carac){
     }else if(arv->letra == carac){
         return 0;
 
-    }else{
+    }else{int getTipo(Arvore* arv);
+
         long int altura = (maximo(getAlturaCaractere(arv->esq, carac), getAlturaCaractere(arv->dir, carac)));
         return altura + 1;
         
@@ -142,6 +157,23 @@ unsigned char* buscaArvore(Arvore* arv, unsigned char carac){
     printf("%s\n", codigo);
     free(codigo);
     return NULL;
+}
+
+
+unsigned int getTamanhoArvore(Arvore* arv){
+    unsigned int tamanho = 0;
+
+    if(arv==NULL){
+        return 0;
+
+    }else if(arv->id == 1){
+        return 9;
+    
+    }else if(arv->id == 0){
+        tamanho += getTamanhoArvore(arv->dir) + getTamanhoArvore(arv->esq);
+        return tamanho + 1;
+    }
+
 }
 
 

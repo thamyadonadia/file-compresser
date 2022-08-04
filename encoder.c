@@ -1,7 +1,7 @@
-#include<stdio.h>
-#include<stdlib.h>
+#include <stdio.h>
+#include <stdlib.h>
 
-#include"encoder.h"
+#include "encoder.h"
 
 int* getCharsFile(char* fileName){
     FILE* file;

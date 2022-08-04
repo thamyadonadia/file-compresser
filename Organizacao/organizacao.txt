@@ -17,7 +17,6 @@ Struct de árvore:
     - lê o arquivo a ser compactado 
     - cria a árvore ótima, utilizando a codificação de huffman
 
-
 * TAD compactador
     - receber o arquivo a ser compactado 
     - ler o arquivo a ser compactado - para definir os caracteres usados e os seus respectivos pesos 
@@ -25,7 +24,6 @@ Struct de árvore:
     - escrever a sequência de bits codificado no arquivo compactado 
     - o arquivo compactado deve conter a árvore de codificação, uma marca de final de arquivo
     - a marca final de arquivo deverá ser inserido após a contagem de bits do arquivo compactado, já que deverá preencher por completo toda a estruta de bits que pode ser deixada para trás
-
 
 * descompactador.c
     - receber o arquivo a ser descompactado 

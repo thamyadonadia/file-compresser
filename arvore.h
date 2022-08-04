@@ -11,6 +11,12 @@ Arvore* uneArvores(Arvore* dir, Arvore* esq);
 
 unsigned char getCaractere(Arvore* arv);
 
+int getTipo(Arvore* arv);
+
+Arvore* getSAE(Arvore* arv);
+
+Arvore* getSAD(Arvore* arv);
+
 long int getPeso(Arvore* arv);
 
 void setPeso(Arvore* arv, long int peso);
@@ -18,6 +24,8 @@ void setPeso(Arvore* arv, long int peso);
 unsigned char* buscaArvore(Arvore* arv,unsigned char carac);
 
 void liberaArvore(Arvore* arv);
+
+unsigned int getTamanhoArvore(Arvore* arv);
 
 long int getAlturaCaractere(Arvore* arv, unsigned char carac);
 

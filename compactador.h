@@ -5,7 +5,9 @@
 #include "encoder.h"
 
 
-//bitmap* criaBitMap(Arvore* arv);
+bitmap* criaArvore_bm(Arvore* arv);
+
+
 
 //void compacta(bitmap* bits, FILE* arquivo);
 
