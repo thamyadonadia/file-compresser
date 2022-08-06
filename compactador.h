@@ -2,13 +2,16 @@
 #define COMPACTADOR_H
 
 #include "bitmap.h"
-#include "encoder.h"
-
+#include "encoder.h" //so chamar arvore?
 
 bitmap* criaArvore_bm(Arvore* arv);
 
+bitmap** criaTabelaCodificacao(Arvore* arv);
 
 
-//void compacta(bitmap* bits, FILE* arquivo);
+
+void compacta(char* nomeArquivo);
+
+void liberaTabelaCodificacao(bitmap** tabela);
 
 #endif // COMPACTADOR_H

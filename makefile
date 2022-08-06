@@ -51,20 +51,20 @@ valgrind:
 clean: 
 	@ echo $(WHITE)
 	@ echo "Limpando arquivos temporarios ..."
-	@ rm -rf $(NAME_PROGRAM) $(O_FILES)
+	@ rm -rf $(NAME_PROGRAM) $(O_FILES) *.comp
 	@ echo $(RESET)
 
 clean_test:
 	@ echo $(RED)
 	@ echo "Removendo arquivos gerais ..."
-	@ rm -rf $(NAME_PROGRAM) $(O_FILES) *.txt
+	@ rm -rf $(NAME_PROGRAM) $(O_FILES) 
 	@ echo $(RESET)
 
-rerun: clean all print run
+rerun: clean all print
 
 valrun: clean all print valgrind
 	
 print:
 	@ echo $(YELLOW) && clear
-	@ echo "Atualizando executavel e rodando ..."
+	@ echo "Atualizando executavel ..."
 	@ echo $(RESET)

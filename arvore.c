@@ -68,8 +68,6 @@ void setPeso(Arvore* arv, long int peso){
     return;
 }
 
-
-
 int arvoreVazia(Arvore* arv){
     if(arv==NULL){
         return 1;
@@ -77,7 +75,6 @@ int arvoreVazia(Arvore* arv){
 
     return 0;
 }
-
 
 static long int maximo(long int a, long int b){
     if(a>=b){
@@ -103,7 +100,7 @@ long int getAlturaCaractere(Arvore* arv, unsigned char carac){
 }
 
 
-static long int buscaNoArvore(Arvore* arv, unsigned char carac, char* codigo, long int alturaCaractere){
+static long int buscaNoArvore(Arvore* arv, unsigned char carac, unsigned char* codigo, long int alturaCaractere){
     long int d = -1, e = -1;
     
     if(arv == NULL){
@@ -151,12 +148,11 @@ unsigned char* buscaArvore(Arvore* arv, unsigned char carac){
         return NULL;
     }
 
-    char* codigo = (char*) malloc(sizeof(char)*(alturaCaractere+1));
+    unsigned char* codigo = (unsigned char*) malloc(sizeof(unsigned char)*(alturaCaractere+1));
     codigo[alturaCaractere] = '\0';
     buscaNoArvore(arv, carac, codigo, alturaCaractere-1);
-    printf("%s\n", codigo);
-    free(codigo);
-    return NULL;
+    
+    return codigo;
 }
 
 
@@ -174,6 +170,7 @@ unsigned int getTamanhoArvore(Arvore* arv){
         return tamanho + 1;
     }
 
+    return 0;
 }
 
 
