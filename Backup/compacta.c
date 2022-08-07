@@ -2,7 +2,6 @@
 #include <string.h>
 #include <stdlib.h>
 #include "compactador.h"
-#include "descompactador.h"
 
 int main(int argc, char const *argv[]){
     char* nomeArquivo; 
@@ -14,11 +13,7 @@ int main(int argc, char const *argv[]){
 
     nomeArquivo = strdup(argv[1]);
     printf("%s\n", nomeArquivo);
-    
     compacta(nomeArquivo);
-    printf("compactou\n");
-    descompacta("teste.comp");
-    
     free(nomeArquivo);
 
     return 0;

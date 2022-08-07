@@ -3,31 +3,58 @@
 #include <string.h>
 
 #include "compactador.h"
-#include "bitmap.h"
 
+// ------------- codificação de Huffman ----------------
+int* getCaracteresArquivo(char* nomeArquivo){
+    FILE* arquivo = fopen(nomeArquivo,"r");
+    int* pesos = (int*) malloc(sizeof(int)*128);
+    unsigned char caractere;
 
-// funções que seram utilizadas para a compactação do arquivo 
-static int* decimalParaBinario(unsigned char carac){
-    int c = carac;
-    int* bin = (int*) malloc(sizeof(int)*8); 
-
-    for(int i = 0; i<7; i++){
-        bin[i] = c%2;
-        c /= 2;
+    // incialização do vetor 
+    for(int i=0; i<128; i++){
+        pesos[i]=0;
     }
 
-    return bin;
+    while(!feof(arquivo)){
+        fscanf(arquivo, "%c",&caractere);
+        pesos[caractere]++;
+    }
+
+    fclose(arquivo);
+    return pesos; 
 }
 
-static int* decimalLongoParaBinario(unsigned char carac){
-    int c = carac;
-    int* bin = (int*) malloc(sizeof(int)*16); 
+Arvore* criaArvoreOtima(int* caracteres){
+    Lista* lista = inicializaLista();
+    Arvore* arvOtima; unsigned char l;
 
-    for(int i = 0; i<15; i++){
-        bin[i] = c%2;
-        c /= 2;
+    for(int i=0; i<128; i++){
+        if(caracteres[i]==0){
+            continue;
+        }
+
+        l = i;
+        arvOtima = insereArvore(l);
+        setPeso(arvOtima,caracteres[i]);
+        insereLista(lista,arvOtima);
     }
 
+    ordenaLista(lista);
+    juntaArvoresLista(lista);
+    arvOtima = getArvCel(getCelIndice(lista,0));
+    liberaLista(lista);
+    return arvOtima;
+}
+// ----------------------------------------------------
+
+static int* charParaBinario_compactador(unsigned char carac){ 
+    int c = carac; int* bin = (int*) malloc(sizeof(int)*8); 
+
+    for(int i=7; i>=0; i--){
+        bin[i] = c%2;
+        c /= 2;     
+    }
+    
     return bin;
 }
 
@@ -37,13 +64,15 @@ static void preencheArvore_bm(Arvore* arv, bitmap* bm){
 
     //se é um nó folha
     }else if(getTipo(arv) == 1){
-        int* bin = decimalParaBinario(getCaractere(arv));
+        int* bin = charParaBinario_compactador(getCaractere(arv));
         bitmapAppendLeastSignificantBit(bm, 1);
 
-        for(int i =0; i<7; i++){
+        for(int i =0; i<8; i++){
             bitmapAppendLeastSignificantBit(bm, bin[i]);
         }
-    
+
+        free(bin);
+
     //se é um nó normal
     }else if(getTipo(arv) == 0){
         bitmapAppendLeastSignificantBit(bm, 0);
@@ -52,8 +81,6 @@ static void preencheArvore_bm(Arvore* arv, bitmap* bm){
     }
 }
 
-
-// função que cria a árvore no formato de bitmap
 bitmap* criaArvore_bm(Arvore* arv){ 
     bitmap* arvore_bm = bitmapInit(getTamanhoArvore(arv));
     preencheArvore_bm(arv, arvore_bm);
@@ -63,15 +90,19 @@ bitmap* criaArvore_bm(Arvore* arv){
 bitmap** criaTabelaCodificacao(Arvore* arv){
     bitmap** tabela = malloc(sizeof(bitmap*)*128);
     
-
     for(int i = 0; i<128; i++){
         unsigned char* caminho = buscaArvore(arv,i);
         
         if(caminho!=NULL){
-            tabela[i]=bitmapInit(strlen((char*)caminho));
+            tabela[i] = bitmapInit(strlen((char*)caminho));
             
             for(int j = 0; j<strlen((char*)caminho); j++){
-                bitmapAppendLeastSignificantBit(tabela[i],caminho[j]);
+                if(caminho[j] == '0'){
+                    bitmapAppendLeastSignificantBit(tabela[i],0);
+
+                }else if(caminho[j]=='1'){
+                    bitmapAppendLeastSignificantBit(tabela[i],1);
+                }
             }
 
         }else{
@@ -85,95 +116,90 @@ bitmap** criaTabelaCodificacao(Arvore* arv){
     return tabela; 
 }
 
-static unsigned int getTamanhoBitmapCompactar (int* pesos, bitmap** tabela){
-    unsigned int tamanho=0;
+static unsigned int getTamanhoBitmapCompactar(int* pesos, bitmap** tabela){
+    unsigned int tamanho = 0;
 
-    for(int i=0;i<128;i++){
-        
-        if(pesos[i]==0||tabela[i]==NULL){
+    for(int i=0; i<128; i++){
+        if(pesos[i]==0 || tabela[i]==NULL){
             continue;
         }
 
-        tamanho += ((bitmapGetLength(tabela[i]))*pesos[i]);
+        tamanho += (bitmapGetLength(tabela[i])) * pesos[i];
     }
 
     return tamanho;
 }
 
 void compacta(char* nomeArquivo){
-    int* pesos = getCharsFile(nomeArquivo);
-    Arvore* arvoreOtima = createOptimalTree(pesos);
-    long int numCaracteres = getPeso(arvoreOtima);
+    // Coleta de pesos, árvore ótima, tabela de codificação e contagem de caracteres 
+    int* pesos = getCaracteresArquivo(nomeArquivo);
+    Arvore* arvoreOtima = criaArvoreOtima(pesos);
     bitmap** tabelaCodificacao = criaTabelaCodificacao(arvoreOtima);
-    bitmap* arvoreOtima_bm = criaArvore_bm(arvoreOtima); 
+    bitmap* arvoreOtima_bm = criaArvore_bm(arvoreOtima);
 
-    char* nomeArquivoComp = (char*) malloc(sizeof(char)*(strlen(nomeArquivo)+2));
-    nomeArquivoComp = strcpy(nomeArquivoComp, strtok(nomeArquivo, "."));
-    strcat(nomeArquivoComp, ".comp");
-    strcat(nomeArquivo, ".txt"); // GAMBIARRA, TROCAR PARA FUNCIONAR COM QUALQUER EXTENSÃO
+    // Organizando o nome dos arquivos
+    char* temp = strdup(nomeArquivo); strtok(temp, ".");
 
+    char* nomeArquivoComp = (char*) malloc(sizeof(char)*(strlen(temp)+6));
+    strcpy(nomeArquivoComp, temp); strcat(nomeArquivoComp, ".comp\0");
 
+    // Abrindo arquivo compactado 
+    FILE* arquivoComp = fopen(nomeArquivoComp, "wb"); 
+
+    //-------------- NÚMERO DE CARACTERES ----------------
+    unsigned int numBits = getTamanhoBitmapCompactar(pesos,tabelaCodificacao);
+    fwrite(&numBits, sizeof(unsigned int), 1, arquivoComp);
     
-    FILE* arquivoComp = fopen(nomeArquivoComp, "wb");
-
-    //-------------- NUMERO DE CARACTERES ----------------
-    //ESCREVER ISSO EM BIT 
-    char* num = malloc(sizeof(char)*10);
-    sprintf(num, "%ld", numCaracteres);
-    fwrite(num, sizeof(char), strlen(num), arquivoComp);
-
-
-    //fprintf(arquivoComp, num);
-    
-    //----------------- ARVORE OTIMA --------------------- 
-
+    //----------------- ÁRVORE ÓTIMA --------------------
     unsigned char caractere, endereco;
-    long int max_sizeInBytes=((bitmapGetMaxSize(arvoreOtima_bm))+7)/8; 
+    unsigned int max_sizeInBits = (bitmapGetMaxSize(arvoreOtima_bm));
+    unsigned int max_sizeInBytes=(max_sizeInBits+7)/8;
+    
+    fwrite(&max_sizeInBits, sizeof(unsigned int), 1, arquivoComp);
+
     for(unsigned int i=0; i<max_sizeInBytes; i++){
-        //fprintf(arquivoComp, bitmapGetBit(arvoreOtima_bm, i));
         caractere = bitmapGetContents(arvoreOtima_bm)[i];
-        printf("%c", caractere);
         fwrite(&caractere, sizeof(unsigned char), 1, arquivoComp);
     }
 
     //--------------- TEXTO COMPACTADO -------------------
-    bitmap* textoCompactadoBm = bitmapInit(getTamanhoBitmapCompactar(pesos,tabelaCodificacao));
-
+    bitmap* textoCompactado_bm = bitmapInit(numBits);
     FILE* arquivo = fopen(nomeArquivo, "r");
-    printf("\n\n");
 
     while(!feof(arquivo)){
         fscanf(arquivo, "%c",&endereco);
+        
         for(unsigned int j=0; j<bitmapGetLength(tabelaCodificacao[endereco]);j++){
             caractere = bitmapGetBit(tabelaCodificacao[endereco],j);
-            printf("%c", caractere);
-            bitmapAppendLeastSignificantBit(textoCompactadoBm,caractere);
-           //fprintf(arquivoComp,bitmapGetBit(tabelaCodificacao[caractere],j));
+            bitmapAppendLeastSignificantBit(textoCompactado_bm,caractere);
         }
     }
 
-    max_sizeInBytes = (bitmapGetMaxSize(textoCompactadoBm)+7)/8;
+    max_sizeInBytes = (bitmapGetMaxSize(textoCompactado_bm)+7)/8;
+    
     for(unsigned int i=0; i<max_sizeInBytes; i++){
-        //fprintf(arquivoComp, bitmapGetBit(textoCompactadoBm, i));
-        //printf("rodada %d\n",i);
-        caractere = bitmapGetContents(textoCompactadoBm)[i];
+        caractere = bitmapGetContents(textoCompactado_bm)[i];
         fwrite(&caractere, sizeof(unsigned char), 1, arquivoComp);
     }
 
+    free(pesos); free(temp); free(nomeArquivoComp);
     liberaArvore(arvoreOtima);
     bitmapLibera(arvoreOtima_bm);
-
+    liberaTabelaCodificacao(tabelaCodificacao);
+    bitmapLibera(textoCompactado_bm);
     fclose(arquivoComp);
-    
-    free(nomeArquivoComp);
     fclose(arquivo);
-    free(num);
-   
 }
 
 void liberaTabelaCodificacao(bitmap** tabela){
     for(int i=0;i<128;i++){
-        bitmapLibera(tabela[i]);
+        if(tabela[i]==NULL){
+            continue;
+        }else{
+            bitmapLibera(tabela[i]);
+        }
+        
     }
+
     free(tabela);
 }

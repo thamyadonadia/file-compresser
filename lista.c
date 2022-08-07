@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include "lista.h"
 
+struct lista{
+    Celula* prim;
+    Celula* ult;
+};
+
 struct celula{
     Celula* ant;
     Celula* prox;
     Arvore* arv;
-};
-
-struct lista{
-    Celula* prim;
-    Celula* ult;
 };
 
 Lista* inicializaLista(){
@@ -78,7 +78,7 @@ void retiraLista(Lista* lista, Arvore* arv){
 
 static Celula* getMenorPeso(Celula* cel){
     Celula* p; Celula* menor= cel;
-    long int menorpeso=getPeso(cel->arv);
+    long int menorpeso = getPeso(cel->arv);
 
     for(p=cel; p!=NULL; p=p->prox){
         if(getPeso(p->arv)<menorpeso){
@@ -90,10 +90,10 @@ static Celula* getMenorPeso(Celula* cel){
 }
 
 Celula* getCelIndice(Lista* lista, int idx){
-    Celula* p;
-    int i;
-    for(i=0,p=lista->prim;i<idx&&p!=NULL;i++,p=p->prox){
-    }
+    Celula* p; int i;
+    
+    for(i=0, p=lista->prim; i<idx && p!=NULL; i++, p=p->prox); 
+    
     if(p==NULL){
         return NULL;
     }else{
@@ -104,8 +104,6 @@ Celula* getCelIndice(Lista* lista, int idx){
 Arvore* getArvCel(Celula* cel){
     return cel->arv;
 }
-
-
 
 void ordenaLista(Lista* lista){
     Celula* p; Celula* m;
@@ -163,29 +161,30 @@ void ordenaLista(Lista* lista){
 }
 
 static int getTamLista(Lista* lista){
-    if(lista==NULL){
+    if(lista == NULL){
         return -1;
     }
+    
     if(lista->prim==lista->ult){
         return 1;
     }
 
-    Celula* p;
-    int i=1;
+    Celula* p; int i = 1;
 
-    for(p=lista->prim;p!=NULL;p=p->prox){
+    for(p=lista->prim; p!=NULL; p=p->prox){
         i++;
     }
     return i;
 }
 
 void juntaArvoresLista(Lista* lista){
-    if(lista==NULL||getTamLista(lista)==1){
+    if((lista == NULL) || (getTamLista(lista) == 1)){
         return;
     }
+    
     Arvore* pri;Arvore* seg;Arvore* nova;
+    
     while(getTamLista(lista)!=1){
-
         pri=getArvCel(getCelIndice(lista,0));
         seg=getArvCel(getCelIndice(lista,1));
         nova = uneArvores(seg,pri);
@@ -193,14 +192,12 @@ void juntaArvoresLista(Lista* lista){
         insereLista(lista, nova);
         retiraLista(lista,pri);
         retiraLista(lista,seg);
-
-        
     }
 }
 
 void liberaLista(Lista* lista){
-    Celula* p; Celula* temp;
-    p=lista->prim;
+    Celula* p = lista->prim; Celula* temp;
+    
     while(p!=NULL){
         temp = p->prox;
         free(p);
@@ -210,9 +207,10 @@ void liberaLista(Lista* lista){
     free(lista);
 }
 
-void imprimeLista(Lista* lista){
+/*void imprimeLista(Lista* lista){
     Celula* p;
+    
     for(p=lista->prim;p!=NULL;p=p->prox){
         printf("%c -- %ld\n",getCaractere(getArvCel(p)),getPeso(getArvCel(p)));
     }
-}
+}*/

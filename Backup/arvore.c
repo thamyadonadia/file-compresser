@@ -65,6 +65,7 @@ void setPeso(Arvore* arv, long int peso){
     if(arv!=NULL){
         arv->peso=peso;
     }
+    return;
 }
 
 int arvoreVazia(Arvore* arv){
@@ -165,7 +166,7 @@ unsigned int getTamanhoArvore(Arvore* arv){
         return 9;
     
     }else if(arv->id == 0){
-        tamanho = getTamanhoArvore(arv->dir) + getTamanhoArvore(arv->esq);
+        tamanho += getTamanhoArvore(arv->dir) + getTamanhoArvore(arv->esq);
         return tamanho + 1;
     }
 

@@ -51,7 +51,7 @@ valgrind:
 clean: 
 	@ echo $(WHITE)
 	@ echo "Limpando arquivos temporarios ..."
-	@ rm -rf $(NAME_PROGRAM) $(O_FILES) *.comp
+	@ rm -rf $(NAME_PROGRAM) $(O_FILES)
 	@ echo $(RESET)
 
 clean_test:

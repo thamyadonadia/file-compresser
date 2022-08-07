@@ -2,13 +2,17 @@
 #define COMPACTADOR_H
 
 #include "bitmap.h"
-#include "encoder.h" //so chamar arvore?
+#include "lista.h"
+
+// ------------- codificação de Huffman ----------------
+int* getCaracteresArquivo(char* nomeArquivo);
+
+Arvore* criaArvoreOtima(int* caracteres);
+// ----------------------------------------------------
 
 bitmap* criaArvore_bm(Arvore* arv);
 
 bitmap** criaTabelaCodificacao(Arvore* arv);
-
-
 
 void compacta(char* nomeArquivo);
 

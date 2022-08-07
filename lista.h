@@ -3,9 +3,9 @@
 
 #include "arvore.h"
 
-typedef struct celula Celula;
-
 typedef struct lista Lista;
+
+typedef struct celula Celula;
 
 Lista* inicializaLista();
 
@@ -17,14 +17,13 @@ Celula* getCelIndice(Lista* lista, int idx);
 
 Arvore* getArvCel(Celula* cel);
 
-void ordenaLista(Lista* lista);
+void ordenaLista(Lista* lista); // VAMOS REFAZER ESSA FUNÇÃO? 
 
 void juntaArvoresLista(Lista* lista);
 
 void liberaLista(Lista* lista);
 
 //funções de teste
-
-void imprimeLista(Lista* lista);
+//void imprimeLista(Lista* lista);
 
 #endif // LISTA_H

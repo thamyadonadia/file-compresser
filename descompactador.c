@@ -19,54 +19,54 @@ static unsigned char binarioParaChar_descompactador(int* bin){
     
     for(int i=0;i<8;i++){
         bit=bin[i];
+        
         for(j=0, mult=1; j<i; j++){
             mult *=2;
         }
+        
         carac += bit* mult;
     }
-    printf("%c\n",carac);
+
     return carac;
 }
 
-static Arvore* reconstroiNoArvoreOtima(bitmap* bm,int* indice){
+static Arvore* reconstroiNoArvoreOtima(bitmap* bm, int* indice){
     unsigned char bit = bitmapGetBit(bm,*(indice));
-    *(indice) = *(indice) + 1;
-    Arvore* arv;
-    printf("%c\n",bit);
+    *(indice) = *(indice) + 1;  Arvore* arv;
+    
     if(bit == 0){
-        printf("Passou em 0 aqui com indice %d\n",*(indice));
-        arv=uneArvores(reconstroiNoArvoreOtima(bm,indice),reconstroiNoArvoreOtima(bm,indice));
+        arv = uneArvores(reconstroiNoArvoreOtima(bm,indice),reconstroiNoArvoreOtima(bm,indice));
         return arv;
-    }
-    if(bit == 1){
-        printf("Passou em 1 aqui com indice %d\n",*(indice));
+
+    }else if(bit == 1){
         int* bin = malloc(sizeof(int)*8);
-        for(int j=7;j>=0;j--){
+        
+        for(int j=7; j>=0; j--){
             bin[j] = bitmapGetBit(bm,*(indice));
             *(indice) = *(indice) + 1;
         }
-        arv=insereArvore(binarioParaChar_descompactador(bin));
+        
+        arv = insereArvore(binarioParaChar_descompactador(bin));
         free(bin);
         return arv;
-
     }
+
     return NULL;
 }
 
 Arvore* reconstroiArvoreOtima(FILE* arquivoComp){
     bitmap* arvoreOtima_bm; Arvore* arvoreOtima;
-    unsigned char caractere;  unsigned int bitNum; 
+    unsigned char caractere; unsigned int bitNum; 
 
-    fread(&bitNum,sizeof(unsigned int),1,arquivoComp);
-    unsigned int byteNum=(bitNum+7)/8;
-    arvoreOtima_bm=bitmapInit(byteNum*8);
+    fread(&bitNum, sizeof(unsigned int), 1, arquivoComp);
+    unsigned int byteNum = (bitNum+7)/8;
+    arvoreOtima_bm = bitmapInit(byteNum*8);
 
-    for(int i=0;i<byteNum;i++){
+    for(int i=0; i<byteNum; i++){
         fread(&caractere, sizeof(unsigned char), 1, arquivoComp);
-        int* bin =  charParaBinario_descompactador(caractere);
+        int* bin = charParaBinario_descompactador(caractere);
         
-        for(int j=0;j<8;j++){
-            
+        for(int j=0; j<8; j++){
             if(bin[j]==1){
                 bitmapAppendLeastSignificantBit(arvoreOtima_bm,1);
 
@@ -79,22 +79,23 @@ Arvore* reconstroiArvoreOtima(FILE* arquivoComp){
     }
 
     // reconstroi a árvore ótima 
-    int* indice = malloc(sizeof(int)); *(indice) = 0;
-    arvoreOtima = reconstroiNoArvoreOtima(arvoreOtima_bm,indice);
-    arv_imprime(arvoreOtima);
+    int* indice = (int*) malloc(sizeof(int)); *(indice) = 0;
+    arvoreOtima = reconstroiNoArvoreOtima(arvoreOtima_bm, indice);
+    bitmapLibera(arvoreOtima_bm);
     free(indice);
     return arvoreOtima;
 }
 
 bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
-    unsigned char caractere; 
+    unsigned char caractere; unsigned int numMax = bitmapGetMaxSize(texto)/8;
 
-    for(int i=0;i<bitmapGetMaxSize(texto);){
+    for(int i=0; i<numMax; i++){
         fread(&caractere, sizeof(unsigned char), 1, arquivoComp);
-        int* bin =  charParaBinario_descompactador(caractere);
-        printf("%d\n",i);
-        for(int j=0;j<8 ;j++,i++){
-            printf("%d",j);
+        int* bin = charParaBinario_descompactador(caractere);
+
+
+
+        for(int j=0; j<8; j++){
             if(bin[j]==1){
                 bitmapAppendLeastSignificantBit(texto,1);
 
@@ -103,6 +104,7 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
             }
         }
 
+        
         free(bin);
     }
 
@@ -110,7 +112,7 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
 }
 
 void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* indice, unsigned int numBits){
-    if(arvoreOtima==NULL || *(indice)<numBits){
+    if(arvoreOtima==NULL || *(indice)>numBits){
         return;
 
     }else if(getTipo(arvoreOtima) == 1){
@@ -120,13 +122,13 @@ void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* ind
 
     }else if(getTipo(arvoreOtima) == 0){
         unsigned char bit = bitmapGetBit(texto, *(indice));
-        *(indice) += 1; 
+        *(indice) = *(indice) + 1; 
 
-        if(bit == '0'){
+        if(bit == 0){
             reconstroiTexto(arquivo, texto, getSAE(arvoreOtima), indice, numBits);
             return;
 
-        }else if(bit == '1'){
+        }else if(bit == 1){
             reconstroiTexto(arquivo, texto, getSAD(arvoreOtima), indice, numBits);
             return;
         }
@@ -140,20 +142,25 @@ void descompacta (char* nomeArquivoComp){
     // leitura da quantidade de caracteres do texto original
     unsigned int numBits;
     fread(&numBits, sizeof(unsigned int), 1, arquivoComp);
-    printf("num bits: %d\n", numBits);
     
     // reconstrução da árvore ótima a partir do binário do arquivo compactado 
     Arvore* arvoreOtima = reconstroiArvoreOtima(arquivoComp);
 
     // constroi o bitmap do texto 
-    int numMax = ((numBits)/8)*8;
+    unsigned int numMax = ((numBits+7)/8)*8;
     printf("NumMax é igual a: %d\n",numMax);
     bitmap* texto = bitmapInit(numMax); 
     texto = coletaTexto_bm(arquivoComp, texto);
 
     int* indice = (int*) malloc(sizeof(int)); *(indice) = 0;
-    // TROCAR ISSO POR FAVOR SOS GAMBIARRA
-    FILE* arquivo = fopen("teste.txt", "w");
+    
+    // escrita do arquivo descompactado 
+    char* temp = strdup(nomeArquivoComp); strtok(temp, ".");
+
+    char* nomeArquivo = (char*) malloc(sizeof(char)*(strlen(temp)+5));
+    strcpy(nomeArquivo, temp); strcat(nomeArquivo, ".txt\0");
+    
+    FILE* arquivo = fopen(nomeArquivo, "w");
     
     for(int i =0; *(indice)<numBits; i++){
         reconstroiTexto(arquivo, texto, arvoreOtima, indice, numBits);
