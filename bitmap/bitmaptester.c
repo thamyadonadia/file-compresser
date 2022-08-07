@@ -6,18 +6,17 @@
 int main(void) {
 	puts("teste"); /* prints  */
 
-	bitmap* bm=bitmapInit(10);
+	bitmap* bm=bitmapInit(11);
 	printf("size=%d bits\n", bitmapGetMaxSize(bm));
-//	bitmapAppendLeastSignificantBit(bm, 1);
-//	bitmapAppendLeastSignificantBit(bm, 0);
-//	bitmapAppendLeastSignificantBit(bm, 0);
-//	bitmapAppendLeastSignificantBit(bm, 0);
-//	bitmapAppendLeastSignificantBit(bm, 1);
-//	bitmapAppendLeastSignificantBit(bm, 0);
-//	bitmapAppendLeastSignificantBit(bm, 0);
-	unsigned char letra = 'a';
-	bitmapAppendLeastSignificantBit(bm, letra);
+	bitmapAppendLeastSignificantBit(bm, 1);
 	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 1);
+	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 0);
+	bitmapAppendLeastSignificantBit(bm, 1);
 	bitmapAppendLeastSignificantBit(bm, 1);
 
 	printf("%0xh\n", bitmapGetContents(bm)[0]);			
