@@ -182,31 +182,3 @@ void liberaArvore(Arvore* arv){
     free(arv);
     return;
 }
-
-static void imprimeArvore (Arvore* arv, int space){
-    if (arv == NULL){
-        return;
-    }
-
-    space += 10;
-
-    imprimeArvore (arv->dir, space);
-
-    printf("\n");
-    for (int i = 10; i < space; i++){
-        printf(" ");
-    }
-
-    if(getCaractere(arv)<128&&getCaractere(arv)>=0){
-        printf("%c\n", getCaractere(arv));
-    }else{
-        printf("O");
-    }
-    imprimeArvore (arv->esq, space);
-
-}
-
-void arv_imprime(Arvore* arv){
-    imprimeArvore(arv, 0);
-    return;
-}

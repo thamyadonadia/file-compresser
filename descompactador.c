@@ -93,8 +93,6 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
         fread(&caractere, sizeof(unsigned char), 1, arquivoComp);
         int* bin = charParaBinario_descompactador(caractere);
 
-
-
         for(int j=0; j<8; j++){
             if(bin[j]==1){
                 bitmapAppendLeastSignificantBit(texto,1);
@@ -103,7 +101,6 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
                 bitmapAppendLeastSignificantBit(texto,0);
             }
         }
-
         
         free(bin);
     }
@@ -148,7 +145,6 @@ void descompacta (char* nomeArquivoComp){
 
     // constroi o bitmap do texto 
     unsigned int numMax = ((numBits+7)/8)*8;
-    printf("NumMax é igual a: %d\n",numMax);
     bitmap* texto = bitmapInit(numMax); 
     texto = coletaTexto_bm(arquivoComp, texto);
 
@@ -156,7 +152,6 @@ void descompacta (char* nomeArquivoComp){
     
     // escrita do arquivo descompactado 
     char* temp = strdup(nomeArquivoComp); strtok(temp, ".");
-
     char* nomeArquivo = (char*) malloc(sizeof(char)*(strlen(temp)+5));
     strcpy(nomeArquivo, temp); strcat(nomeArquivo, ".txt\0");
     
@@ -166,6 +161,7 @@ void descompacta (char* nomeArquivoComp){
         reconstroiTexto(arquivo, texto, arvoreOtima, indice, numBits);
     }
 
+    free(indice); free(nomeArquivo); free(temp);
     bitmapLibera(texto);
     liberaArvore(arvoreOtima);
     fclose(arquivoComp);

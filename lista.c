@@ -206,11 +206,3 @@ void liberaLista(Lista* lista){
 
     free(lista);
 }
-
-/*void imprimeLista(Lista* lista){
-    Celula* p;
-    
-    for(p=lista->prim;p!=NULL;p=p->prox){
-        printf("%c -- %ld\n",getCaractere(getArvCel(p)),getPeso(getArvCel(p)));
-    }
-}*/

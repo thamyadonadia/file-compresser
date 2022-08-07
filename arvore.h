@@ -30,8 +30,6 @@ long int getAlturaCaractere(Arvore* arv, unsigned char carac);
 unsigned char* buscaArvore(Arvore* arv,unsigned char carac);
 
 void liberaArvore(Arvore* arv);
-//USADO PARA TESTES
-void arv_imprime(Arvore* arv);
 
 #endif // ARVORE_H
 

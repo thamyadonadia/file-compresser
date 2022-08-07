@@ -17,13 +17,10 @@ Celula* getCelIndice(Lista* lista, int idx);
 
 Arvore* getArvCel(Celula* cel);
 
-void ordenaLista(Lista* lista); // VAMOS REFAZER ESSA FUNÇÃO? 
+void ordenaLista(Lista* lista);
 
 void juntaArvoresLista(Lista* lista);
 
 void liberaLista(Lista* lista);
-
-//funções de teste
-//void imprimeLista(Lista* lista);
 
 #endif // LISTA_H
