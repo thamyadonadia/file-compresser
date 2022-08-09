@@ -136,6 +136,17 @@ void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* ind
 void descompacta (char* nomeArquivoComp){
     FILE* arquivoComp = fopen(nomeArquivoComp, "rb");
 
+    //leitura da quantidade de chars que compoem o sufixo
+    int sufix_size;
+
+    fread(&sufix_size, sizeof(int),1,arquivoComp);
+
+    char* sufix = malloc(sizeof(char)*(sufix_size+1));
+
+    for(int i=0;i<sufix_size;i++){
+        fread(&sufix[i],sizeof(char),1,arquivoComp);
+    }
+
     // leitura da quantidade de caracteres do texto original
     unsigned int numBits;
     fread(&numBits, sizeof(unsigned int), 1, arquivoComp);
@@ -152,8 +163,8 @@ void descompacta (char* nomeArquivoComp){
     
     // escrita do arquivo descompactado 
     char* temp = strdup(nomeArquivoComp); strtok(temp, ".");
-    char* nomeArquivo = (char*) malloc(sizeof(char)*(strlen(temp)+5));
-    strcpy(nomeArquivo, temp); strcat(nomeArquivo, ".txt\0");
+    char* nomeArquivo = (char*) malloc(sizeof(char)*(strlen(temp)+3+strlen(sufix)));
+    strcpy(nomeArquivo, temp); strcat(nomeArquivo, "."); strcat(nomeArquivo, sufix);strcat(nomeArquivo, "\0");
     
     FILE* arquivo = fopen(nomeArquivo, "w");
     

@@ -7,17 +7,18 @@
 // ------------- codificação de Huffman ----------------
 int* getCaracteresArquivo(char* nomeArquivo){
     FILE* arquivo = fopen(nomeArquivo,"r");
-    int* pesos = (int*) malloc(sizeof(int)*128);
+    int* pesos = (int*) malloc(sizeof(int)*256);
     unsigned char caractere;
 
     // incialização do vetor 
-    for(int i=0; i<128; i++){
+    for(int i=0; i<256; i++){
         pesos[i]=0;
     }
 
     while(!feof(arquivo)){
-        fscanf(arquivo, "%c",&caractere);
-        pesos[caractere]++;
+        if(fread(&caractere, sizeof(unsigned char), 1, arquivo)){
+            pesos[caractere]++;
+        }
     }
 
     fclose(arquivo);
@@ -28,7 +29,7 @@ Arvore* criaArvoreOtima(int* caracteres){
     Lista* lista = inicializaLista();
     Arvore* arvOtima; unsigned char l;
 
-    for(int i=0; i<128; i++){
+    for(int i=0; i<256; i++){
         if(caracteres[i]==0){
             continue;
         }
@@ -88,9 +89,9 @@ bitmap* criaArvore_bm(Arvore* arv){
 }
 
 bitmap** criaTabelaCodificacao(Arvore* arv){
-    bitmap** tabela = malloc(sizeof(bitmap*)*128);
+    bitmap** tabela = malloc(sizeof(bitmap*)*256);
     
-    for(int i = 0; i<128; i++){
+    for(int i = 0; i<256; i++){
         unsigned char* caminho = buscaArvore(arv,i);
         
         if(caminho!=NULL){
@@ -119,7 +120,7 @@ bitmap** criaTabelaCodificacao(Arvore* arv){
 static unsigned int getTamanhoBitmapCompactar(int* pesos, bitmap** tabela){
     unsigned int tamanho = 0;
 
-    for(int i=0; i<128; i++){
+    for(int i=0; i<256; i++){
         if(pesos[i]==0 || tabela[i]==NULL){
             continue;
         }
@@ -140,11 +141,30 @@ void compacta(char* nomeArquivo){
     // Organizando o nome dos arquivos
     char* temp = strdup(nomeArquivo); strtok(temp, ".");
 
+    
+    
+
     char* nomeArquivoComp = (char*) malloc(sizeof(char)*(strlen(temp)+6));
     strcpy(nomeArquivoComp, temp); strcat(nomeArquivoComp, ".comp\0");
 
     // Abrindo arquivo compactado 
     FILE* arquivoComp = fopen(nomeArquivoComp, "wb"); 
+
+
+    //-------------- NÚMERO DE SUFIXO ----------------
+
+    char* sufix = strtok(NULL ,"\0");
+
+    int sufix_size = strlen(sufix);
+
+    fwrite(&sufix_size, sizeof(int),1,arquivoComp);
+
+    char caractere_sufix;
+
+    for(int i=0 ; i<sufix_size;i++){
+        caractere_sufix = sufix[i];
+        fwrite(&caractere_sufix, sizeof(char), 1, arquivoComp);
+    }
 
     //-------------- NÚMERO DE CARACTERES ----------------
     unsigned int numBits = getTamanhoBitmapCompactar(pesos,tabelaCodificacao);
@@ -167,11 +187,13 @@ void compacta(char* nomeArquivo){
     FILE* arquivo = fopen(nomeArquivo, "r");
 
     while(!feof(arquivo)){
-        fscanf(arquivo, "%c",&endereco);
+        //fscanf(arquivo, "%c",&endereco);
+        if(fread(&endereco, sizeof(unsigned char), 1, arquivo)){
         
-        for(unsigned int j=0; j<bitmapGetLength(tabelaCodificacao[endereco]);j++){
-            caractere = bitmapGetBit(tabelaCodificacao[endereco],j);
-            bitmapAppendLeastSignificantBit(textoCompactado_bm,caractere);
+            for(unsigned int j=0; j<bitmapGetLength(tabelaCodificacao[endereco]);j++){
+                caractere = bitmapGetBit(tabelaCodificacao[endereco],j);
+                bitmapAppendLeastSignificantBit(textoCompactado_bm,caractere);
+            }
         }
     }
 
@@ -192,7 +214,7 @@ void compacta(char* nomeArquivo){
 }
 
 void liberaTabelaCodificacao(bitmap** tabela){
-    for(int i=0;i<128;i++){
+    for(int i=0;i<256;i++){
         if(tabela[i]==NULL){
             continue;
         }else{
