@@ -192,6 +192,7 @@ void juntaArvoresLista(Lista* lista){
         insereLista(lista, nova);
         retiraLista(lista,pri);
         retiraLista(lista,seg);
+        ordenaLista(lista);
     }
 }
 

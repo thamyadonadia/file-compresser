@@ -142,8 +142,6 @@ void compacta(char* nomeArquivo){
     char* temp = strdup(nomeArquivo); strtok(temp, ".");
 
     
-    
-
     char* nomeArquivoComp = (char*) malloc(sizeof(char)*(strlen(temp)+6));
     strcpy(nomeArquivoComp, temp); strcat(nomeArquivoComp, ".comp\0");
 
