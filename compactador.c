@@ -6,7 +6,7 @@
 
 // ------------- codificação de Huffman ----------------
 int* getCaracteresArquivo(char* nomeArquivo){
-    FILE* arquivo = fopen(nomeArquivo,"r");
+    FILE* arquivo = fopen(nomeArquivo,"rb");
     int* pesos = (int*) malloc(sizeof(int)*256);
     unsigned char caractere;
 
@@ -117,8 +117,8 @@ bitmap** criaTabelaCodificacao(Arvore* arv){
     return tabela; 
 }
 
-static unsigned int getTamanhoBitmapCompactar(int* pesos, bitmap** tabela){
-    unsigned int tamanho = 0;
+static unsigned long int getTamanhoBitmapCompactar(int* pesos, bitmap** tabela){
+    unsigned long int tamanho = 0;
 
     for(int i=0; i<256; i++){
         if(pesos[i]==0 || tabela[i]==NULL){
@@ -165,8 +165,8 @@ void compacta(char* nomeArquivo){
     }
 
     //-------------- NÚMERO DE CARACTERES ----------------
-    unsigned int numBits = getTamanhoBitmapCompactar(pesos,tabelaCodificacao);
-    fwrite(&numBits, sizeof(unsigned int), 1, arquivoComp);
+    unsigned long int numBits = getTamanhoBitmapCompactar(pesos,tabelaCodificacao);
+    fwrite(&numBits, sizeof(unsigned long int), 1, arquivoComp);
     
     //----------------- ÁRVORE ÓTIMA --------------------
     unsigned char caractere, endereco;
@@ -182,7 +182,7 @@ void compacta(char* nomeArquivo){
 
     //--------------- TEXTO COMPACTADO -------------------
     bitmap* textoCompactado_bm = bitmapInit(numBits);
-    FILE* arquivo = fopen(nomeArquivo, "r");
+    FILE* arquivo = fopen(nomeArquivo, "rb");
 
     while(!feof(arquivo)){
         //fscanf(arquivo, "%c",&endereco);

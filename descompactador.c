@@ -148,8 +148,8 @@ void descompacta (char* nomeArquivoComp){
     }
 
     // leitura da quantidade de caracteres do texto original
-    unsigned int numBits;
-    fread(&numBits, sizeof(unsigned int), 1, arquivoComp);
+    unsigned long int numBits;
+    fread(&numBits, sizeof(unsigned long int), 1, arquivoComp);
     
     // reconstrução da árvore ótima a partir do binário do arquivo compactado 
     Arvore* arvoreOtima = reconstroiArvoreOtima(arquivoComp);
@@ -166,7 +166,7 @@ void descompacta (char* nomeArquivoComp){
     char* nomeArquivo = (char*) malloc(sizeof(char)*(strlen(temp)+3+strlen(sufix)));
     strcpy(nomeArquivo, temp); strcat(nomeArquivo, "."); strcat(nomeArquivo, sufix);strcat(nomeArquivo, "\0");
     
-    FILE* arquivo = fopen(nomeArquivo, "w");
+    FILE* arquivo = fopen(nomeArquivo, "wb");
     
     for(int i =0; *(indice)<numBits; i++){
         reconstroiTexto(arquivo, texto, arvoreOtima, indice, numBits);
