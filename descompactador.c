@@ -174,7 +174,7 @@ void descompacta (char* nomeArquivoComp){
         reconstroiTexto(arquivo, texto, arvoreOtima, indice, numBits);
     }
 
-    free(indice); free(nomeArquivo); free(temp);
+    free(indice); free(nomeArquivo); free(temp); free(sufix);
     bitmapLibera(texto);
     liberaArvore(arvoreOtima);
     fclose(arquivoComp);
