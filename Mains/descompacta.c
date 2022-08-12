@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "descompactador.h"
+#include "../descompactador.h"
 
 int main(int argc, char const *argv[]){
     char* nomeArquivoComp; 

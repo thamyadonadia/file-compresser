@@ -1,13 +1,15 @@
 #MAKEFILE By: Afonso Salvador de Magalhaes
-#With support of Kevin Carvalho de Jesus and João Paulo Moura
 
-NAME_PROGRAM = prog
+COMP = compacta.out
+DESC = descompacta.out
 CC = gcc
-FLAGS = -lm -pedantic -Wall 
-C_FILES = $(wildcard *.c)
-O_FILES = $(patsubst %.c, %.o, $(C_FILES))
+FLAGS = -pedantic -lm -Wall
+DIR_MAINS = Mains
+FOLDER = Executaveis
 
-all: $(O_FILES) create_executable
+UNIVERSAL_C = arvore.o bitmap.o compactador.o lista.o compacta.o
+
+UNIVERSAL_D = arvore.o bitmap.o descompactador.o lista.o descompacta.o
 
 CYAN = "\033[1;36m"
 YELLOW = "\033[1;33m"
@@ -15,56 +17,39 @@ WHITE = "\033[1;37m"
 RED = "\033[1;31m"
 RESET = "\033[0m"
 
+all : o_files create_executable create_dir
 
-main.o: main.c
-	@ echo $(CYAN)
-	@ echo "Compilando main.c ..."
-	@ $(CC) -c $< $(FLAGS)
-	@ echo $(RESET)
 
-%.o: %.c %.h
+o_files : 
 	@ echo $(CYAN)
-	@ echo "Compilando $< ..."
-	@ $(CC) -c $< $(FLAGS)
+	@ echo "Compilando arquivos..."
+	@ $(CC) -c *.c
+	@ $(CC) -c $(DIR_MAINS)/*.c
 	@ echo $(RESET)
 
 create_executable: 
 	@ echo $(CYAN)
-	@ echo "Criando executavel..."
-	@ $(CC) -o $(NAME_PROGRAM) $(O_FILES) $(FLAGS)
+	@ echo "Criando executaveis..."
+	@ $(CC) -o $(COMP) $(UNIVERSAL_C)
+	@ $(CC) -o $(DESC) $(UNIVERSAL_D)
 	@ echo $(RESET)
 
-run: 
-	@ echo $(CYAN)
-	@ echo "Executando programa ..."
-	@ echo $(RESET)
-	@ ./$(NAME_PROGRAM)
-
-test: clean all run
-
-valgrind: 
-	@ echo $(YELLOW)
-	@ echo "Rodando valgrind ..."
-	@ echo $(RESET)
-	@ valgrind ./$(NAME_PROGRAM)
-
-clean: 
+create_dir:
 	@ echo $(WHITE)
-	@ echo "Limpando arquivos temporarios ..."
-	@ rm -rf $(NAME_PROGRAM) $(O_FILES)
+	@ echo "Criando pasta..."
+	@mkdir $(FOLDER)
+	@mv $(COMP) $(DESC) ./$(FOLDER)
 	@ echo $(RESET)
 
-clean_test:
+clean:
 	@ echo $(RED)
 	@ echo "Removendo arquivos gerais ..."
-	@ rm -rf $(NAME_PROGRAM) $(O_FILES) 
+	@ rm -rf *.o ./$(FOLDER) 
 	@ echo $(RESET)
 
-rerun: clean all print
-
-valrun: clean all print valgrind
-	
-print:
-	@ echo $(YELLOW) && clear
-	@ echo "Atualizando executavel ..."
+clear:
+	@ clear
+	@ echo $(YELLOW)
+	@ echo "Removendo arquivos temporarios ..."
+	@ rm -rf *.o 
 	@ echo $(RESET)

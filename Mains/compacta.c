@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include "compactador.h"
-#include "descompactador.h"
+#include "../compactador.h"
+#include "../descompactador.h"
 
 int main(int argc, char const *argv[]){
     char* nomeArquivo; 
