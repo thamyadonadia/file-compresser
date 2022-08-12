@@ -4,7 +4,7 @@ Departamento de Informática - Estrutura de Dados I
 Universidade Federal do Espírito Santo (UFES) 
 
 ## Descrição do projeto 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compactador e descompactador de arquivos, no qual utiliza o algoritmo de Huffman para codificar os dados passados pela linha de comando. 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Compactador e descompactador de arquivos que utiliza o algoritmo de Huffman para codificar os dados passados pela linha de comando. 
 
 ## Como rodar o arquivo - Funcionamento do Makefile 
 
