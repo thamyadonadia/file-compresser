@@ -110,7 +110,7 @@ bitmap** criaTabelaCodificacao(Arvore* arv){
             tabela[i] = NULL;
             continue;
         }
-        
+
         free(caminho);
     }
 
@@ -153,9 +153,9 @@ void compacta(char* nomeArquivo){
 
     char* sufix = strtok(NULL ,"\0");
 
-    int sufix_size = strlen(sufix);
+    unsigned int sufix_size = strlen(sufix);
 
-    fwrite(&sufix_size, sizeof(int),1,arquivoComp);
+    fwrite(&sufix_size, sizeof(unsigned int),1,arquivoComp);
 
     char caractere_sufix;
 
@@ -180,6 +180,8 @@ void compacta(char* nomeArquivo){
         fwrite(&caractere, sizeof(unsigned char), 1, arquivoComp);
     }
 
+    
+
     //--------------- TEXTO COMPACTADO -------------------
     bitmap* textoCompactado_bm = bitmapInit(numBits);
     FILE* arquivo = fopen(nomeArquivo, "rb");
@@ -187,7 +189,7 @@ void compacta(char* nomeArquivo){
     while(!feof(arquivo)){
         //fscanf(arquivo, "%c",&endereco);
         if(fread(&endereco, sizeof(unsigned char), 1, arquivo)){
-        
+            
             for(unsigned int j=0; j<bitmapGetLength(tabelaCodificacao[endereco]);j++){
                 caractere = bitmapGetBit(tabelaCodificacao[endereco],j);
                 bitmapAppendLeastSignificantBit(textoCompactado_bm,caractere);

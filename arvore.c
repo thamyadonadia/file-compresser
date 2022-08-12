@@ -101,7 +101,7 @@ long int getAlturaCaractere(Arvore* arv, unsigned char carac){
     if(arvoreVazia(arv)){
         return -2147483648;
 
-    }else if(arv->caractere == carac){
+    }else if(arv->id==1 && arv->caractere == carac){
         return 0;
 
     }else{

@@ -3,7 +3,7 @@
 #include <string.h>
 #include "descompactador.h"
 
-static int* charParaBinario_descompactador(unsigned char carac){
+static int* charParaBinario_descompactador(unsigned char carac){ //OK
     int c = carac; int* bin = (int*) malloc(sizeof(int)*8); 
     
     for(int i=7; i>=0; i--){
@@ -11,10 +11,11 @@ static int* charParaBinario_descompactador(unsigned char carac){
         c /= 2; 
     }
 
+    
     return bin;
 }
 
-static unsigned char binarioParaChar_descompactador(int* bin){
+static unsigned char binarioParaChar_descompactador(int* bin){ //OK
     unsigned char carac = 0; int mult=1,bit,j;
     
     for(int i=0;i<8;i++){
@@ -27,10 +28,11 @@ static unsigned char binarioParaChar_descompactador(int* bin){
         carac += bit* mult;
     }
 
+
     return carac;
 }
 
-static Arvore* reconstroiNoArvoreOtima(bitmap* bm, int* indice){
+static Arvore* reconstroiNoArvoreOtima(bitmap* bm, int* indice){ //OK
     unsigned char bit = bitmapGetBit(bm,*(indice));
     *(indice) = *(indice) + 1;  Arvore* arv;
     
@@ -108,7 +110,7 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
     return texto; 
 }
 
-void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* indice, unsigned int numBits){
+void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* indice, unsigned int numBits){ //nao passou
     if(arvoreOtima==NULL || *(indice)>numBits){
         return;
 
@@ -137,9 +139,9 @@ void descompacta (char* nomeArquivoComp){
     FILE* arquivoComp = fopen(nomeArquivoComp, "rb");
 
     //leitura da quantidade de chars que compoem o sufixo
-    int sufix_size;
+    unsigned int sufix_size;
 
-    fread(&sufix_size, sizeof(int),1,arquivoComp);
+    fread(&sufix_size, sizeof(unsigned int),1,arquivoComp);
 
     char* sufix = malloc(sizeof(char)*(sufix_size+1));
 
