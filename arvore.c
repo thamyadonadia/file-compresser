@@ -89,6 +89,7 @@ unsigned int getTamanhoArvore(Arvore* arv){
     return 0;
 }
 
+//comapra dois valores e retorna o maximo
 static long int maximo(long int a, long int b){
     if(a>=b){
         return a;
@@ -110,6 +111,7 @@ long int getAlturaCaractere(Arvore* arv, unsigned char carac){
     }   
 }
 
+//recebe o caractere a ser procurado e retorna o caminho do topo da arvore até ele
 static long int buscaNoArvore(Arvore* arv, unsigned char carac, unsigned char* codigo, long int alturaCaractere){
     long int d = -1, e = -1;
     

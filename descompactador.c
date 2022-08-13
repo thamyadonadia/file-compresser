@@ -3,7 +3,8 @@
 #include <string.h>
 #include "descompactador.h"
 
-static int* charParaBinario_descompactador(unsigned char carac){ //OK
+//Passa um char para um vetor de bianrio
+static int* charParaBinario_descompactador(unsigned char carac){ 
     int c = carac; int* bin = (int*) malloc(sizeof(int)*8); 
     
     for(int i=7; i>=0; i--){
@@ -15,7 +16,8 @@ static int* charParaBinario_descompactador(unsigned char carac){ //OK
     return bin;
 }
 
-static unsigned char binarioParaChar_descompactador(int* bin){ //OK
+//Passa um Binario para char
+static unsigned char binarioParaChar_descompactador(int* bin){
     unsigned char carac = 0; int mult=1,bit,j;
     
     for(int i=0;i<8;i++){
@@ -32,7 +34,8 @@ static unsigned char binarioParaChar_descompactador(int* bin){ //OK
     return carac;
 }
 
-static Arvore* reconstroiNoArvoreOtima(bitmap* bm, int* indice){ //OK
+//Recebe a arvore otima em bitmap e reconstroi em tipo Arvore para utilizar na descompactação
+static Arvore* reconstroiNoArvoreOtima(bitmap* bm, int* indice){ 
     unsigned char bit = bitmapGetBit(bm,*(indice));
     *(indice) = *(indice) + 1;  Arvore* arv;
     
@@ -60,10 +63,12 @@ Arvore* reconstroiArvoreOtima(FILE* arquivoComp){
     bitmap* arvoreOtima_bm; Arvore* arvoreOtima;
     unsigned char caractere; unsigned int bitNum; 
 
+    //trata a informação do tamanho da arvore
     fread(&bitNum, sizeof(unsigned int), 1, arquivoComp);
     unsigned int byteNum = (bitNum+7)/8;
     arvoreOtima_bm = bitmapInit(byteNum*8);
 
+    //tranforma os caracteres em um bitmap para a reconstrução
     for(int i=0; i<byteNum; i++){
         fread(&caractere, sizeof(unsigned char), 1, arquivoComp);
         int* bin = charParaBinario_descompactador(caractere);
@@ -110,15 +115,19 @@ bitmap* coletaTexto_bm(FILE* arquivoComp, bitmap* texto){
     return texto; 
 }
 
-void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* indice, unsigned int numBits){ //nao passou
+void reconstroiTexto(FILE* arquivo, bitmap* texto, Arvore* arvoreOtima, int* indice, unsigned int numBits){ 
+
+    //Caso não exista arvore otima ou não há mais bits a serem lidos
     if(arvoreOtima==NULL || *(indice)>numBits){
         return;
 
+    //se for um no folha, procede a ler o caractere
     }else if(getTipo(arvoreOtima) == 1){
         unsigned char caractere = getCaractere(arvoreOtima);
         fwrite(&caractere, sizeof(unsigned char), 1, arquivo);
         return;
 
+    //se for um no galho, ler o caminho
     }else if(getTipo(arvoreOtima) == 0){
         unsigned char bit = bitmapGetBit(texto, *(indice));
         *(indice) = *(indice) + 1; 
