@@ -1,6 +1,6 @@
 # Compactador e descompactador de arquivos  
 > Alunos: Afonso Salvador de Magalhães e Thamya Vieira Hashimoto Donadia   
-Departamento de Informática - Estrutura de Dados I 
+Departamento de Informática - Estrutura de Dados I - 
 Universidade Federal do Espírito Santo (UFES) 
 
 ## Descrição do projeto 
